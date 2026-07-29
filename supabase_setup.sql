@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS productos (
   categoria    TEXT NOT NULL DEFAULT 'Otro',
   stock_minimo INTEGER NOT NULL DEFAULT 5 CHECK (stock_minimo >= 0),
   notas        TEXT,
+  imagen_url   TEXT,
   created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

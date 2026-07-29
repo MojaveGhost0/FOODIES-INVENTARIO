@@ -20,7 +20,7 @@ const CAT_CLASS = {
 }
 
 export default function ProductCard({ producto, onIncrement, onDecrement, onEdit, onDelete, userRole }) {
-  const { nombre, cantidad, unidad, categoria, stock_minimo } = producto
+  const { nombre, cantidad, unidad, categoria, stock_minimo, imagen_url } = producto
   const stockLevel = getStockLevel(cantidad, stock_minimo)
   const qtyRef = useRef(null)
 
@@ -57,7 +57,12 @@ export default function ProductCard({ producto, onIncrement, onDecrement, onEdit
         </span>
       </div>
 
-      {/* ── Product name ── */}
+      {/* ── Product name and image ── */}
+      {imagen_url && (
+        <div style={{ margin: '0.5rem 0', width: '100%', height: '120px', borderRadius: '8px', overflow: 'hidden', background: '#f5f5f5' }}>
+          <img src={imagen_url} alt={nombre} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </div>
+      )}
       <h3 className="card-name">{nombre}</h3>
 
       {/* ── Quantity controls ── */}
