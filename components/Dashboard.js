@@ -15,6 +15,7 @@ const FILTERS = [
   'Jugos y Frutas',
   'Vegetales y Frescos',
   'Salsas y Condimentos',
+  'Insumos Agotados',
   'Stock Crítico'
 ]
 
@@ -38,11 +39,12 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
   }, [productos])
 
   // Stats
-  const totalUnidades = useMemo(() =>
-    productos.reduce((s, p) => s + (p.cantidad || 0), 0), [productos])
+  const insumosAgotados = useMemo(() =>
+    productos.filter(p => (p.cantidad || 0) <= 0).length,
+  [productos])
 
   const stockBajo = useMemo(() =>
-    productos.filter(p => p.cantidad <= (p.stock_minimo ?? 5)).length,
+    productos.filter(p => (p.cantidad || 0) > 0 && (p.cantidad || 0) <= (p.stock_minimo ?? 5)).length,
   [productos])
 
   // Filtered products
@@ -56,8 +58,10 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
         (p.notas || '').toLowerCase().includes(q)
       )
     }
-    if (filter === 'Stock Crítico') {
-      list = list.filter(p => p.cantidad <= (p.stock_minimo ?? 5))
+    if (filter === 'Insumos Agotados') {
+      list = list.filter(p => (p.cantidad || 0) <= 0)
+    } else if (filter === 'Stock Crítico') {
+      list = list.filter(p => (p.cantidad || 0) <= (p.stock_minimo ?? 5))
     } else if (filter !== 'Todos') {
       list = list.filter(p => p.categoria === filter)
     }
@@ -113,7 +117,12 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
     <div className="tab-content">
       {/* ── Stats Row ── */}
       <div className="stats-row">
-        <div className="stat-card blue">
+        <div 
+          className="stat-card blue"
+          onClick={() => setFilter('Todos')}
+          style={{ cursor: 'pointer' }}
+          title="Ver todos los insumos"
+        >
           <div className="sc-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
@@ -125,20 +134,32 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
           </div>
         </div>
 
-        <div className="stat-card teal">
+        <div 
+          className="stat-card red"
+          onClick={() => setFilter(filter === 'Insumos Agotados' ? 'Todos' : 'Insumos Agotados')}
+          style={{ cursor: 'pointer' }}
+          title="Clic para ver insumos agotados"
+        >
           <div className="sc-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-              <polyline points="17 6 23 6 23 12"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
             </svg>
           </div>
           <div>
-            <span className="sc-num">{totalUnidades.toLocaleString()}</span>
-            <span className="sc-label">Stock en Cocina</span>
+            <span className="sc-num" style={insumosAgotados > 0 ? { color: '#ef4444' } : {}}>
+              {insumosAgotados}
+            </span>
+            <span className="sc-label">Insumos Agotados</span>
           </div>
         </div>
 
-        <div className="stat-card amber">
+        <div 
+          className="stat-card amber"
+          onClick={() => setFilter(filter === 'Stock Crítico' ? 'Todos' : 'Stock Crítico')}
+          style={{ cursor: 'pointer' }}
+          title="Clic para ver insumos por agotarse"
+        >
           <div className="sc-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
@@ -147,11 +168,11 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
           </div>
           <div>
             <span className="sc-num">{stockBajo}</span>
-            <span className="sc-label">Stock Crítico</span>
+            <span className="sc-label">Por Agotarse</span>
           </div>
         </div>
 
-        <div className="stat-card green">
+        <div className="stat-card green" title="Movimientos registrados en la jornada">
           <div className="sc-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
               <polyline points="9 11 12 14 22 4"/>

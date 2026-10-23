@@ -536,6 +536,7 @@ input, select, textarea, button {
 }
 
 .stat-card.blue::after  { background: linear-gradient(90deg, var(--accent), transparent); }
+.stat-card.red::after   { background: linear-gradient(90deg, #ef4444, transparent); }
 .stat-card.teal::after  { background: linear-gradient(90deg, var(--teal), transparent); }
 .stat-card.amber::after { background: linear-gradient(90deg, var(--amber), transparent); }
 .stat-card.green::after { background: linear-gradient(90deg, var(--green), transparent); }
@@ -560,6 +561,7 @@ input, select, textarea, button {
 .sc-icon svg { width: 21px; height: 21px; }
 
 .stat-card.blue  .sc-icon { background: var(--accent-dim); color: var(--accent); }
+.stat-card.red   .sc-icon { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
 .stat-card.teal  .sc-icon { background: var(--teal-dim);   color: var(--teal); }
 .stat-card.amber .sc-icon { background: var(--amber-dim);  color: var(--amber); }
 .stat-card.green .sc-icon { background: var(--green-dim);  color: var(--green); }
