@@ -4,7 +4,7 @@ import { addProducto, restockProducto, ALLOWED_CATEGORIAS as CATEGORIAS, ALLOWED
 import { useToast } from './Toast'
 import ImageUpload from './ImageUpload'
 
-export default function AgregarProducto({ productos, setProductos, setActiveTab }) {
+export default function AgregarProducto({ productos = [], setProductos, setActiveTab }) {
   const toast = useToast()
   const [tipo, setTipo] = useState('nuevo')
 
@@ -21,7 +21,7 @@ export default function AgregarProducto({ productos, setProductos, setActiveTab 
   })
   const [loadingRestock, setLoadingRestock] = useState(false)
 
-  const selectedProducto = productos.find(p => p.id === restockForm.producto_id)
+  const selectedProducto = (productos || []).find(p => p.id === restockForm.producto_id)
 
   function handleNuevoChange(e) {
     setNuevoForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -243,7 +243,7 @@ export default function AgregarProducto({ productos, setProductos, setActiveTab 
                   onChange={handleRestockChange}
                 >
                   <option value="">— Selecciona un producto —</option>
-                  {productos.map(p => (
+                  {(productos || []).map(p => (
                     <option key={p.id} value={p.id}>
                       {p.nombre} ({p.cantidad} {p.unidad})
                     </option>
