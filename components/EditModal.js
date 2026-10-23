@@ -39,6 +39,7 @@ export default function EditModal({ producto, onClose, onSave }) {
       categoria:    form.categoria,
       stock_minimo: Number(form.stock_minimo) || 5,
       notas:        form.notas.trim() || null,
+      imagen_url:   producto?.imagen_url || null,
     })
     setSaving(false)
   }

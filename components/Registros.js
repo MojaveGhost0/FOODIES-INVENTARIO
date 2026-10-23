@@ -19,7 +19,7 @@ function formatDate(iso) {
   }
 }
 
-export default function Registros() {
+export default function Registros({ userRole }) {
   const toast = useToast()
   const [movimientos, setMovimientos] = useState([])
   const [loading, setLoading] = useState(true)
@@ -40,11 +40,15 @@ export default function Registros() {
   useEffect(() => { load() }, [tipoFilter]) // eslint-disable-line
 
   async function handleClear() {
+    if (userRole !== 'admin') {
+      toast('Acceso denegado: solo administradores pueden vaciar el historial', 'error')
+      return
+    }
     if (!confirm('¿Eliminar todo el historial de movimientos? Esta acción no se puede deshacer.')) return
     try {
       await clearMovimientos()
       setMovimientos([])
-      toast('Historial limpiado', 'info')
+      toast('Historial limpiado correctamente', 'info')
     } catch {
       toast('Error al limpiar historial', 'error')
     }
@@ -73,14 +77,16 @@ export default function Registros() {
             <option value="eliminado">Eliminados</option>
             <option value="edicion">Ediciones</option>
           </select>
-          <button className="btn-danger-sm" onClick={handleClear}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-              <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
-            </svg>
-            Limpiar
-          </button>
+          {userRole === 'admin' && (
+            <button className="btn-danger-sm" onClick={handleClear} title="Solo administradores">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+              </svg>
+              Limpiar
+            </button>
+          )}
         </div>
       </div>
 
@@ -126,6 +132,7 @@ export default function Registros() {
                 <th>Producto</th>
                 <th>Detalle</th>
                 <th>Cantidad</th>
+                <th>Usuario</th>
               </tr>
             </thead>
             <tbody>
@@ -156,6 +163,11 @@ export default function Registros() {
                       ) : (
                         <span className="log-qty neu">—</span>
                       )}
+                    </td>
+                    <td>
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
+                        {m.usuario_email ? m.usuario_email.split('@')[0] : '—'}
+                      </span>
                     </td>
                   </tr>
                 )

@@ -32,10 +32,17 @@ export default function Usuarios() {
   async function handleRoleChange(id, currentRole) {
     const newRole = currentRole === 'admin' ? 'usuario' : 'admin'
     
-    // Evitar que el admin principal se quite a sí mismo (opcional, pero buena práctica)
-    const { data: sessionData } = await supabase.auth.getSession()
-    if (sessionData.session?.user?.id === id && newRole === 'usuario') {
+    // Evitar que el admin se quite el rol a sí mismo
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user?.id === id && newRole === 'usuario') {
       toast('No puedes quitarte el rol de admin a ti mismo', 'error')
+      return
+    }
+
+    // Evitar degradar al único administrador existente en el sistema
+    const totalAdmins = usuarios.filter(u => u.rol === 'admin').length
+    if (currentRole === 'admin' && newRole === 'usuario' && totalAdmins <= 1) {
+      toast('Operación denegada: Debe haber al menos un administrador en el sistema', 'error')
       return
     }
 
@@ -45,10 +52,13 @@ export default function Usuarios() {
         .update({ rol: newRole })
         .eq('id', id)
       
-      if (error) throw error
+      if (error) {
+        toast(error.message || 'Error al actualizar rol', 'error')
+        return
+      }
       
       setUsuarios(prev => prev.map(u => u.id === id ? { ...u, rol: newRole } : u))
-      toast('Rol actualizado correctamente', 'success')
+      toast(`Rol cambiado a "${newRole}" correctamente`, 'success')
     } catch (error) {
       toast('Error al actualizar rol', 'error')
     }

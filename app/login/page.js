@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
@@ -8,23 +8,64 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [failedAttempts, setFailedAttempts] = useState(0)
+  const [lockoutTimer, setLockoutTimer] = useState(0)
   const router = useRouter()
+
+  // Si el usuario ya está autenticado, redirigir directamente al panel
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) router.push('/')
+    })
+  }, [router])
+
+  // Temporizador de bloqueo tras múltiples intentos fallidos
+  useEffect(() => {
+    let interval = null
+    if (lockoutTimer > 0) {
+      interval = setInterval(() => {
+        setLockoutTimer(prev => prev - 1)
+      }, 1000)
+    }
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [lockoutTimer])
 
   const handleLogin = async (e) => {
     e.preventDefault()
+    if (lockoutTimer > 0) return
+
     setLoading(true)
     setError(null)
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    const cleanEmail = email.trim().toLowerCase()
 
-    if (error) {
-      setError(error.message)
+    try {
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password,
+      })
+
+      if (authError) {
+        const nextAttempts = failedAttempts + 1
+        setFailedAttempts(nextAttempts)
+
+        if (nextAttempts >= 5) {
+          setLockoutTimer(30)
+          setError('Demasiados intentos fallidos por seguridad. Espera 30 segundos antes de reintentar.')
+        } else {
+          // Mensaje genérico para prevenir enumeración de usuarios
+          setError('Correo o contraseña incorrectos.')
+        }
+        setLoading(false)
+      } else {
+        setFailedAttempts(0)
+        router.push('/')
+      }
+    } catch {
+      setError('Error de conexión al iniciar sesión. Intenta nuevamente.')
       setLoading(false)
-    } else {
-      router.push('/')
     }
   }
 
@@ -45,10 +86,12 @@ export default function LoginPage() {
             <input
               id="email"
               type="email"
+              autoComplete="email"
               placeholder="admin@mmglass.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={lockoutTimer > 0 || loading}
             />
           </div>
 
@@ -57,15 +100,25 @@ export default function LoginPage() {
             <input
               id="password"
               type="password"
+              autoComplete="current-password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={lockoutTimer > 0 || loading}
             />
           </div>
 
-          <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Entrando...' : 'Iniciar Sesión'}
+          <button 
+            type="submit" 
+            className="btn-primary" 
+            disabled={loading || lockoutTimer > 0}
+          >
+            {lockoutTimer > 0 
+              ? `Bloqueado (${lockoutTimer}s)` 
+              : loading 
+                ? 'Verificando...' 
+                : 'Iniciar Sesión'}
           </button>
         </form>
       </div>

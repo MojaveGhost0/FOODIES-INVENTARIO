@@ -60,7 +60,13 @@ export default function ProductCard({ producto, onIncrement, onDecrement, onEdit
       {/* ── Product name and image ── */}
       {imagen_url && (
         <div style={{ margin: '0.5rem 0', width: '100%', height: '120px', borderRadius: '8px', overflow: 'hidden', background: '#f5f5f5' }}>
-          <img src={imagen_url} alt={nombre} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          <img 
+            src={imagen_url} 
+            alt={nombre} 
+            loading="lazy"
+            onError={(e) => { e.currentTarget.style.display = 'none' }}
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+          />
         </div>
       )}
       <h3 className="card-name">{nombre}</h3>

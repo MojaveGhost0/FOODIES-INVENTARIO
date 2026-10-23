@@ -60,30 +60,72 @@ export default function HomePage() {
   const [userRole, setUserRole] = useState(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
-  // ── SEGURIDAD: Verificar sesión activa ──
+  // ── SEGURIDAD: Verificar sesión activa con validación de servidor ──
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session)
-      if (session) {
-        const { data } = await supabase.from('perfiles').select('rol').eq('id', session.user.id).single()
-        if (data) setUserRole(data.rol)
+    let isMounted = true
+
+    async function checkAuth() {
+      try {
+        const { data: { user }, error: userError } = await supabase.auth.getUser()
+        if (userError || !user) {
+          if (isMounted) {
+            setSession(null)
+            setUserRole(null)
+            setAuthChecking(false)
+            router.push('/login')
+          }
+          return
+        }
+
+        const { data: { session: currentSession } } = await supabase.auth.getSession()
+        if (isMounted) {
+          setSession(currentSession)
+        }
+
+        // Obtener rol seguro desde perfiles
+        const { data: perfil } = await supabase
+          .from('perfiles')
+          .select('rol')
+          .eq('id', user.id)
+          .single()
+
+        if (isMounted) {
+          setUserRole(perfil?.rol || 'usuario')
+          setAuthChecking(false)
+        }
+      } catch (err) {
+        console.error('Error al verificar sesión:', err)
+        if (isMounted) {
+          setAuthChecking(false)
+          router.push('/login')
+        }
       }
-      setAuthChecking(false)
-      if (!session) router.push('/login')
-    })
+    }
+
+    checkAuth()
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session)
-      if (session) {
-        const { data } = await supabase.from('perfiles').select('rol').eq('id', session.user.id).single()
-        if (data) setUserRole(data.rol)
+    } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      if (!newSession) {
+        setSession(null)
+        setUserRole(null)
+        router.push('/login')
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        setSession(newSession)
+        const { data: perfil } = await supabase
+          .from('perfiles')
+          .select('rol')
+          .eq('id', newSession.user.id)
+          .single()
+        if (perfil) setUserRole(perfil.rol)
       }
-      if (!session) router.push('/login')
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      isMounted = false
+      subscription.unsubscribe()
+    }
   }, [router])
 
   const loadProductos = useCallback(async () => {
@@ -184,7 +226,7 @@ export default function HomePage() {
               userRole={userRole}
             />
           )}
-          {activeTab === 'registros' && <Registros />}
+          {activeTab === 'registros' && <Registros userRole={userRole} />}
           {activeTab === 'agregar' && userRole === 'admin' && (
             <AgregarProducto
               productos={productos}
