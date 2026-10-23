@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { addProducto, restockProducto, ALLOWED_CATEGORIAS as CATEGORIAS, ALLOWED_UNIDADES as UNIDADES } from '@/lib/db'
 import { useToast } from './Toast'
-import ImageUpload from './ImageUpload'
 
 export default function AgregarProducto({ productos = [], setProductos, setActiveTab }) {
   const toast = useToast()
@@ -190,22 +189,6 @@ export default function AgregarProducto({ productos = [], setProductos, setActiv
                   rows={3}
                 />
               </div>
-
-              <div className="form-group">
-                <label>Foto del Producto</label>
-                {nuevoForm.imagen_url ? (
-                  <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <img src={nuevoForm.imagen_url} alt="Vista previa" style={{ width: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: '8px', border: '1px solid #eee' }} />
-                    <button type="button" className="btn-secondary" onClick={() => setNuevoForm(prev => ({ ...prev, imagen_url: '' }))}>Quitar Foto</button>
-                  </div>
-                ) : (
-                  <ImageUpload 
-                    disabled={loadingNuevo} 
-                    onUpload={(url) => setNuevoForm(prev => ({ ...prev, imagen_url: url }))} 
-                  />
-                )}
-              </div>
-
 
               <button type="submit" className="btn-primary" disabled={loadingNuevo}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
