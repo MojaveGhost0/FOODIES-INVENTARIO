@@ -10,7 +10,7 @@ export default function AgregarProducto({ productos = [], setProductos, setActiv
   // ── Form: Nuevo Producto / Insumo Gastronómico ──
   const [nuevoForm, setNuevoForm] = useState({
     nombre: '', cantidad: '', unidad: 'kg',
-    categoria: 'Parrilla y Carnes', stock_minimo: '5', notas: '', imagen_url: ''
+    categoria: 'Carnes y Embutidos', stock_minimo: '5', notas: '', imagen_url: ''
   })
   const [loadingNuevo, setLoadingNuevo] = useState(false)
 
@@ -48,7 +48,7 @@ export default function AgregarProducto({ productos = [], setProductos, setActiv
       })
       setProductos(prev => [...prev, nuevo].sort((a, b) => a.nombre.localeCompare(b.nombre)))
       toast(`"${nuevo.nombre}" agregado al inventario`, 'success')
-      setNuevoForm({ nombre: '', cantidad: '', unidad: 'kg', categoria: 'Parrilla y Carnes', stock_minimo: '5', notas: '', imagen_url: '' })
+      setNuevoForm({ nombre: '', cantidad: '', unidad: 'kg', categoria: 'Carnes y Embutidos', stock_minimo: '5', notas: '', imagen_url: '' })
       setTimeout(() => setActiveTab('dashboard'), 800)
     } catch (err) {
       toast('Error al agregar producto', 'error')
@@ -127,7 +127,7 @@ export default function AgregarProducto({ productos = [], setProductos, setActiv
               </div>
               <div>
                 <h3>Nuevo Insumo / Producto</h3>
-                <p>Registra cortes de parrilla, insumos árabes, comida rápida o bebidas</p>
+                <p>Registra carnes, panes, granos, l&aacute;cteos, vegetales, bebidas y m&aacute;s insumos de cocina</p>
               </div>
             </div>
 

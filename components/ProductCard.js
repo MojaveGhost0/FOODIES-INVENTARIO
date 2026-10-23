@@ -11,9 +11,12 @@ function getStockLevel(cantidad, minimo = 5) {
 const STOCK_LABEL = { out: 'Sin Stock', low: 'Stock Bajo', normal: 'Normal', high: 'Alto' }
 
 const CAT_CLASS = {
-  'Parrilla y Carnes':      'Parrilla',
-  'Comida Árabe':           'Arabe',
-  'Comida Rápida':          'Rapida',
+  'Carnes y Embutidos':     'Carnes',
+  'Pollo y Pescados':       'Pollo',
+  'Panes y Masas':          'Panes',
+  'Granos y Cereales':      'Granos',
+  'Lácteos y Quesos':       'Lacteos',
+  'Aceites y Grasas':       'Aceites',
   'Bebidas y Refrescos':    'Bebidas',
   'Jugos y Frutas':         'Jugos',
   'Vegetales y Frescos':    'Vegetales',

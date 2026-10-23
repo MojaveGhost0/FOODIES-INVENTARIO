@@ -9,13 +9,17 @@ import { downloadCSV, printReport, todayStamp } from '@/lib/export'
 
 const FILTERS = [
   'Todos',
-  'Parrilla y Carnes',
-  'Comida Árabe',
-  'Comida Rápida',
+  'Carnes y Embutidos',
+  'Pollo y Pescados',
+  'Panes y Masas',
+  'Granos y Cereales',
+  'Lácteos y Quesos',
+  'Aceites y Grasas',
   'Bebidas y Refrescos',
   'Jugos y Frutas',
   'Vegetales y Frescos',
   'Salsas y Condimentos',
+  'Desechables y Empaques',
   'Insumos Agotados',
   'Stock Crítico'
 ]
@@ -208,7 +212,7 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
 
       {/* ── Header with filters ── */}
       <div className="section-header">
-        <h2 className="section-title">Control de Cocina, Parrilla y Barra</h2>
+        <h2 className="section-title">Control de Cocina y Barra</h2>
         <div className="filter-row">
           {FILTERS.map(f => (
             <button

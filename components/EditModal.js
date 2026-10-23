@@ -5,7 +5,7 @@ import { ALLOWED_CATEGORIAS as CATEGORIAS, ALLOWED_UNIDADES as UNIDADES } from '
 export default function EditModal({ producto, onClose, onSave }) {
   const [form, setForm] = useState({
     nombre: '', cantidad: '', unidad: 'kg',
-    categoria: 'Parrilla y Carnes', stock_minimo: '5', notas: '',
+    categoria: 'Carnes y Embutidos', stock_minimo: '5', notas: '',
   })
   const [saving, setSaving] = useState(false)
 
@@ -15,7 +15,7 @@ export default function EditModal({ producto, onClose, onSave }) {
         nombre:      producto.nombre || '',
         cantidad:    producto.cantidad ?? '',
         unidad:      producto.unidad || 'kg',
-        categoria:   producto.categoria || 'Parrilla y Carnes',
+        categoria:   producto.categoria || 'Otro',
         stock_minimo: producto.stock_minimo ?? '5',
         notas:       producto.notas || '',
       })
