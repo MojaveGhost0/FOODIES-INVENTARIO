@@ -10,12 +10,17 @@ import Dashboard from '@/components/Dashboard'
 import Registros from '@/components/Registros'
 import AgregarProducto from '@/components/AgregarProducto'
 import Usuarios from '@/components/Usuarios'
+import ListaCompras from '@/components/ListaCompras'
 import { getProductos } from '@/lib/db'
 
 const PAGE_INFO = {
   dashboard: {
     title: 'Control de Cocina & Barra',
     subtitle: 'Inventario de carnes, comida árabe, comida rápida y bebidas en tiempo real',
+  },
+  compras: {
+    title: 'Lista de Compras',
+    subtitle: 'Reposición sugerida automática según stock mínimo, lista para enviar al proveedor',
   },
   registros: {
     title: 'Historial de Despachos y Entradas',
@@ -226,6 +231,7 @@ export default function HomePage() {
               userRole={userRole}
             />
           )}
+          {activeTab === 'compras' && <ListaCompras productos={productos} loading={loading} />}
           {activeTab === 'registros' && <Registros userRole={userRole} />}
           {activeTab === 'agregar' && userRole === 'admin' && (
             <AgregarProducto

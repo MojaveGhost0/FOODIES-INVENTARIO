@@ -5,6 +5,7 @@ import EditModal from './EditModal'
 import DeleteModal from './DeleteModal'
 import { updateCantidad, editProducto, deleteProducto, getMovimientosHoy } from '@/lib/db'
 import { useToast } from './Toast'
+import { downloadCSV, printReport, todayStamp } from '@/lib/export'
 
 const FILTERS = [
   'Todos',
@@ -67,6 +68,25 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
     }
     return list
   }, [productos, search, filter])
+
+  const exportHeaders = ['Insumo / Producto', 'Categoría', 'Stock actual', 'Unidad', 'Stock mínimo', 'Estado', 'Notas']
+  const exportRows = () => filtered.map(p => {
+    const nivel = getStockLevel(p.cantidad || 0, p.stock_minimo ?? 5)
+    const estado = nivel === 'out' ? 'Agotado' : nivel === 'low' ? 'Por agotarse' : 'Disponible'
+    return [p.nombre, p.categoria || 'Otro', p.cantidad || 0, p.unidad || '', p.stock_minimo ?? 5, estado, p.notas || '']
+  })
+
+  function handleExcel() {
+    if (!filtered.length) return toast('No hay productos para exportar', 'info')
+    downloadCSV(`foodies-inventario-${todayStamp()}.csv`, exportHeaders, exportRows())
+    toast('Inventario descargado (Excel)', 'success')
+  }
+
+  function handlePDF() {
+    if (!filtered.length) return toast('No hay productos para exportar', 'info')
+    const ok = printReport('Inventario Actual', `${filter} · ${filtered.length} productos`, exportHeaders, exportRows())
+    if (!ok) toast('El navegador bloqueó la ventana emergente. Permítela para generar el PDF.', 'error')
+  }
 
   async function handleQuantityChange(producto, delta) {
     const nuevaCantidad = Math.max(0, producto.cantidad + delta)
@@ -199,6 +219,8 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
               {f}
             </button>
           ))}
+          <button className="filter-btn" onClick={handleExcel} title="Exportar la vista actual a Excel">⬇ Excel</button>
+          <button className="filter-btn" onClick={handlePDF} title="Exportar la vista actual a PDF">🖨 PDF</button>
         </div>
       </div>
 
