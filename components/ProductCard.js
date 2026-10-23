@@ -11,12 +11,14 @@ function getStockLevel(cantidad, minimo = 5) {
 const STOCK_LABEL = { out: 'Sin Stock', low: 'Stock Bajo', normal: 'Normal', high: 'Alto' }
 
 const CAT_CLASS = {
-  'Cristal':          '',
-  'Aluminio':         'Aluminio',
-  'Acero Inoxidable': 'Acero',
-  'Herrajes':         'Herrajes',
-  'Selladores':       'Selladores',
-  'Herramientas':     'Herramientas',
+  'Parrilla y Carnes':      'Parrilla',
+  'Comida Árabe':           'Arabe',
+  'Comida Rápida':          'Rapida',
+  'Bebidas y Refrescos':    'Bebidas',
+  'Jugos y Frutas':         'Jugos',
+  'Vegetales y Frescos':    'Vegetales',
+  'Salsas y Condimentos':   'Salsas',
+  'Desechables y Empaques': 'Desechables',
 }
 
 export default function ProductCard({ producto, onIncrement, onDecrement, onEdit, onDelete, userRole }) {

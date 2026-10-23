@@ -4,11 +4,11 @@ import { getMovimientos, clearMovimientos } from '@/lib/db'
 import { useToast } from './Toast'
 
 const TIPO_LABELS = {
-  entrada:  'Entrada',
-  salida:   'Salida',
-  nuevo:    'Nuevo',
-  eliminado:'Eliminado',
-  edicion:  'Edición',
+  entrada:   'Entrada / Compra',
+  salida:    'Salida / Cocina',
+  nuevo:     'Alta de Insumo',
+  eliminado: 'Baja de Insumo',
+  edicion:   'Ajuste Manual',
 }
 
 function formatDate(iso) {
@@ -63,19 +63,19 @@ export default function Registros({ userRole }) {
   return (
     <div className="tab-content">
       <div className="section-header">
-        <h2 className="section-title">Historial de Movimientos</h2>
+        <h2 className="section-title">Historial de Cocina, Despachos y Entradas</h2>
         <div className="log-filters">
           <select
             className="log-filter-select"
             value={tipoFilter}
             onChange={e => setTipoFilter(e.target.value)}
           >
-            <option value="all">Todos los tipos</option>
-            <option value="entrada">Entradas</option>
-            <option value="salida">Salidas</option>
-            <option value="nuevo">Nuevos productos</option>
-            <option value="eliminado">Eliminados</option>
-            <option value="edicion">Ediciones</option>
+            <option value="all">Todos los movimientos</option>
+            <option value="entrada">Entradas / Compras de Insumos</option>
+            <option value="salida">Salidas / Consumos de Cocina</option>
+            <option value="nuevo">Altas de Insumos</option>
+            <option value="eliminado">Bajas de Insumos</option>
+            <option value="edicion">Ajustes de Inventario</option>
           </select>
           {userRole === 'admin' && (
             <button className="btn-danger-sm" onClick={handleClear} title="Solo administradores">
@@ -109,7 +109,7 @@ export default function Registros({ userRole }) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
             </svg>
-            <p>Cargando registros…</p>
+            <p>Cargando registros de cocina…</p>
           </div>
         </div>
       ) : movimientos.length === 0 ? (
@@ -119,7 +119,7 @@ export default function Registros({ userRole }) {
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
               <polyline points="14,2 14,8 20,8"/>
             </svg>
-            <p>No hay movimientos registrados.</p>
+            <p>No hay movimientos registrados en cocina.</p>
           </div>
         </div>
       ) : (
@@ -129,8 +129,8 @@ export default function Registros({ userRole }) {
               <tr>
                 <th>Fecha y Hora</th>
                 <th>Tipo</th>
-                <th>Producto</th>
-                <th>Detalle</th>
+                <th>Insumo / Producto</th>
+                <th>Detalle / Lote</th>
                 <th>Cantidad</th>
                 <th>Usuario</th>
               </tr>

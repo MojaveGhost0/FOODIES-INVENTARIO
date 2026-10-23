@@ -7,7 +7,7 @@ export default function DeleteModal({ producto, onClose, onConfirm }) {
     <div className={`modal-overlay${isOpen ? ' open' : ''}`} onClick={onClose}>
       <div className="modal-box sm" onClick={e => e.stopPropagation()}>
         <div className="modal-head is-danger">
-          <h3>Eliminar Producto</h3>
+          <h3>Dar de Baja Insumo</h3>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -20,7 +20,7 @@ export default function DeleteModal({ producto, onClose, onConfirm }) {
             </svg>
           </div>
           <p className="delete-msg">
-            ¿Eliminar <strong>"{producto?.nombre}"</strong> del inventario?
+            ¿Eliminar <strong>"{producto?.nombre}"</strong> del inventario de cocina?
           </p>
           <p className="delete-sub">
             Stock actual: {producto?.cantidad} {producto?.unidad} · Esta acción no se puede deshacer.

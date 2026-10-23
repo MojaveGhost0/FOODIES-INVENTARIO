@@ -76,10 +76,10 @@ export default function Sidebar({ activeTab, setActiveTab, totalProductos, total
       {/* ── Sidebar Desktop / Mobile Drawer ── */}
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-logo">
-          <img src="/logo.png" alt="MMGlass" className="logo-img" />
+          <img src="/logo.png" alt="Restaurante & Grill" className="logo-img" />
           <div className="sidebar-brand-wrap">
-            <span className="sidebar-brand">MMGlass</span>
-            <span className="sidebar-sub">Inventario</span>
+            <span className="sidebar-brand">Gourmet & Grill</span>
+            <span className="sidebar-sub">Cocina & Barra</span>
           </div>
           {/* Close button inside sidebar on mobile */}
           <button 
@@ -94,7 +94,7 @@ export default function Sidebar({ activeTab, setActiveTab, totalProductos, total
         </div>
 
         <nav className="sidebar-nav">
-          <div className="nav-label">Módulos</div>
+          <div className="nav-label">Áreas de Gestión</div>
           {navItems.map(item => (
             <button
               key={item.id}
@@ -122,12 +122,12 @@ export default function Sidebar({ activeTab, setActiveTab, totalProductos, total
           <div className="sidebar-stats-card">
             <div className="ss-item">
               <span className="ss-num">{totalProductos}</span>
-              <span className="ss-label">Productos</span>
+              <span className="ss-label">Insumos</span>
             </div>
             <div className="ss-divider" />
             <div className="ss-item">
               <span className="ss-num">{totalUnidades}</span>
-              <span className="ss-label">Unidades</span>
+              <span className="ss-label">Stock Cocina</span>
             </div>
           </div>
         </div>

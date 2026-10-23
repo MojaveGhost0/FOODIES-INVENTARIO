@@ -1,13 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
-
-const UNIDADES   = ['unidades', 'm²', 'metros', 'kg', 'láminas', 'barras', 'rollos', 'piezas']
-const CATEGORIAS = ['Cristal', 'Aluminio', 'Acero Inoxidable', 'Herrajes', 'Selladores', 'Herramientas', 'Otro']
+import { ALLOWED_CATEGORIAS as CATEGORIAS, ALLOWED_UNIDADES as UNIDADES } from '@/lib/db'
 
 export default function EditModal({ producto, onClose, onSave }) {
   const [form, setForm] = useState({
-    nombre: '', cantidad: '', unidad: 'unidades',
-    categoria: 'Cristal', stock_minimo: '5', notas: '',
+    nombre: '', cantidad: '', unidad: 'kg',
+    categoria: 'Parrilla y Carnes', stock_minimo: '5', notas: '',
   })
   const [saving, setSaving] = useState(false)
 
@@ -16,8 +14,8 @@ export default function EditModal({ producto, onClose, onSave }) {
       setForm({
         nombre:      producto.nombre || '',
         cantidad:    producto.cantidad ?? '',
-        unidad:      producto.unidad || 'unidades',
-        categoria:   producto.categoria || 'Cristal',
+        unidad:      producto.unidad || 'kg',
+        categoria:   producto.categoria || 'Parrilla y Carnes',
         stock_minimo: producto.stock_minimo ?? '5',
         notas:       producto.notas || '',
       })
@@ -50,14 +48,14 @@ export default function EditModal({ producto, onClose, onSave }) {
     <div className={`modal-overlay${isOpen ? ' open' : ''}`} onClick={onClose}>
       <div className="modal-box" onClick={e => e.stopPropagation()}>
         <div className="modal-head">
-          <h3>Editar Producto</h3>
+          <h3>Editar Insumo / Producto</h3>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="modal-body">
             <div className="form-group">
-              <label htmlFor="edit-nombre">Nombre del Producto</label>
+              <label htmlFor="edit-nombre">Nombre del Insumo / Producto</label>
               <input
                 id="edit-nombre" name="nombre" type="text"
                 value={form.nombre} onChange={handleChange} maxLength={80}

@@ -14,20 +14,20 @@ import { getProductos } from '@/lib/db'
 
 const PAGE_INFO = {
   dashboard: {
-    title: 'Dashboard',
-    subtitle: 'Control de inventario en tiempo real',
+    title: 'Control de Cocina & Barra',
+    subtitle: 'Inventario de carnes, comida árabe, comida rápida y bebidas en tiempo real',
   },
   registros: {
-    title: 'Historial de Movimientos',
-    subtitle: 'Registro de entradas, salidas y cambios',
+    title: 'Historial de Despachos y Entradas',
+    subtitle: 'Registro de consumos en cocina, mermas, restocks y recepción de proveedores',
   },
   agregar: {
-    title: 'Agregar Producto',
-    subtitle: 'Nuevo producto o restock de existente',
+    title: 'Registrar Insumo / Producto',
+    subtitle: 'Nuevo corte de carne, insumos de cocina o bebidas',
   },
   usuarios: {
-    title: 'Gestión de Usuarios',
-    subtitle: 'Administra roles y accesos',
+    title: 'Personal & Accesos',
+    subtitle: 'Administra roles para cocineros, encargados y administradores',
   }
 }
 
@@ -155,7 +155,7 @@ export default function HomePage() {
         <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img 
             src="/logo.png" 
-            alt="MMGlass Logo" 
+            alt="Restaurante Logo" 
             style={{ width: '80px', height: '80px', objectFit: 'contain', zIndex: 10 }}
           />
           <div style={{ 
@@ -164,8 +164,8 @@ export default function HomePage() {
             borderRadius: '50%', animation: 'spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite' 
           }} />
         </div>
-        <h2 style={{ marginTop: '24px', fontSize: '18px', fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '0.04em' }}>MMGLASS</h2>
-        <p style={{ marginTop: '4px', fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Iniciando Sistema...</p>
+        <h2 style={{ marginTop: '24px', fontSize: '18px', fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '0.04em' }}>GOURMET & GRILL</h2>
+        <p style={{ marginTop: '4px', fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Iniciando Sistema de Cocina...</p>
       </div>
     )
   }

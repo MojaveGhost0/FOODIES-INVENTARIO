@@ -1,20 +1,17 @@
 'use client'
 import { useState } from 'react'
-import { addProducto, restockProducto } from '@/lib/db'
+import { addProducto, restockProducto, ALLOWED_CATEGORIAS as CATEGORIAS, ALLOWED_UNIDADES as UNIDADES } from '@/lib/db'
 import { useToast } from './Toast'
 import ImageUpload from './ImageUpload'
-
-const UNIDADES   = ['unidades', 'm²', 'metros', 'kg', 'láminas', 'barras', 'rollos', 'piezas']
-const CATEGORIAS = ['Cristal', 'Aluminio', 'Acero Inoxidable', 'Herrajes', 'Selladores', 'Herramientas', 'Otro']
 
 export default function AgregarProducto({ productos, setProductos, setActiveTab }) {
   const toast = useToast()
   const [tipo, setTipo] = useState('nuevo')
 
-  // ── Form: Nuevo Producto ──
+  // ── Form: Nuevo Producto / Insumo Gastronómico ──
   const [nuevoForm, setNuevoForm] = useState({
-    nombre: '', cantidad: '', unidad: 'unidades',
-    categoria: 'Cristal', stock_minimo: '5', notas: '', imagen_url: ''
+    nombre: '', cantidad: '', unidad: 'kg',
+    categoria: 'Parrilla y Carnes', stock_minimo: '5', notas: '', imagen_url: ''
   })
   const [loadingNuevo, setLoadingNuevo] = useState(false)
 
@@ -52,7 +49,7 @@ export default function AgregarProducto({ productos, setProductos, setActiveTab 
       })
       setProductos(prev => [...prev, nuevo].sort((a, b) => a.nombre.localeCompare(b.nombre)))
       toast(`"${nuevo.nombre}" agregado al inventario`, 'success')
-      setNuevoForm({ nombre: '', cantidad: '', unidad: 'unidades', categoria: 'Cristal', stock_minimo: '5', notas: '', imagen_url: '' })
+      setNuevoForm({ nombre: '', cantidad: '', unidad: 'kg', categoria: 'Parrilla y Carnes', stock_minimo: '5', notas: '', imagen_url: '' })
       setTimeout(() => setActiveTab('dashboard'), 800)
     } catch (err) {
       toast('Error al agregar producto', 'error')
@@ -130,26 +127,26 @@ export default function AgregarProducto({ productos, setProductos, setActiveTab 
                 </svg>
               </div>
               <div>
-                <h3>Nuevo Producto</h3>
-                <p>Registra un producto que no existe en el inventario</p>
+                <h3>Nuevo Insumo / Producto</h3>
+                <p>Registra cortes de parrilla, insumos árabes, comida rápida o bebidas</p>
               </div>
             </div>
 
             <div className="form-body">
               <div className="form-group">
-                <label htmlFor="nombre">Nombre del Producto *</label>
+                <label htmlFor="nombre">Nombre del Insumo / Producto *</label>
                 <input
                   id="nombre" name="nombre" type="text"
-                  placeholder="Ej: Cristal Templado 6mm"
+                  placeholder="Ej: Carne Angus 200g, Pan Árabe, Pulpa de Mora, Coca-Cola 2L…"
                   value={nuevoForm.nombre}
                   onChange={handleNuevoChange}
-                  maxLength={80}
+                  maxLength={100}
                 />
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="cantidad">Cantidad Inicial *</label>
+                  <label htmlFor="cantidad">Stock Inicial en Cocina *</label>
                   <input
                     id="cantidad" name="cantidad" type="number"
                     placeholder="0" min="0"
@@ -167,13 +164,13 @@ export default function AgregarProducto({ productos, setProductos, setActiveTab 
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="categoria">Categoría</label>
+                  <label htmlFor="categoria">Categoría del Restaurante</label>
                   <select id="categoria" name="categoria" value={nuevoForm.categoria} onChange={handleNuevoChange}>
                     {CATEGORIAS.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="stock_minimo">Stock Mínimo</label>
+                  <label htmlFor="stock_minimo">Stock Crítico (Mínimo)</label>
                   <input
                     id="stock_minimo" name="stock_minimo" type="number"
                     placeholder="5" min="0"
@@ -184,10 +181,10 @@ export default function AgregarProducto({ productos, setProductos, setActiveTab 
               </div>
 
               <div className="form-group">
-                <label htmlFor="notas">Notas (opcional)</label>
+                <label htmlFor="notas">Notas / Especificaciones (opcional)</label>
                 <textarea
                   id="notas" name="notas"
-                  placeholder="Descripción, proveedor, características…"
+                  placeholder="Proveedor, temperatura de almacenamiento (-18°C / 4°C), receta o lote…"
                   value={nuevoForm.notas}
                   onChange={handleNuevoChange}
                   rows={3}
@@ -283,10 +280,10 @@ export default function AgregarProducto({ productos, setProductos, setActiveTab 
               )}
 
               <div className="form-group">
-                <label htmlFor="restock-notas">Notas (opcional)</label>
+                <label htmlFor="restock-notas">Notas de Recepción (opcional)</label>
                 <input
                   id="restock-notas" name="notas" type="text"
-                  placeholder="Proveedor, motivo, factura…"
+                  placeholder="Proveedor, factura de compra, fecha de vencimiento…"
                   value={restockForm.notas}
                   onChange={handleRestockChange}
                 />

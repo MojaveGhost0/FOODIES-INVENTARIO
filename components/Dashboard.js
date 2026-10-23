@@ -6,12 +6,22 @@ import DeleteModal from './DeleteModal'
 import { updateCantidad, editProducto, deleteProducto, getMovimientosHoy } from '@/lib/db'
 import { useToast } from './Toast'
 
-const FILTERS = ['Todos', 'Bajo', 'Normal', 'Alto']
+const FILTERS = [
+  'Todos',
+  'Parrilla y Carnes',
+  'Comida Árabe',
+  'Comida Rápida',
+  'Bebidas y Refrescos',
+  'Jugos y Frutas',
+  'Vegetales y Frescos',
+  'Salsas y Condimentos',
+  'Stock Crítico'
+]
 
 function getStockLevel(cantidad, minimo = 5) {
   if (cantidad <= 0) return 'out'
   if (cantidad <= minimo) return 'low'
-  if (cantidad <= minimo * 4) return 'normal'
+  if (cantidad <= minimo * 3) return 'normal'
   return 'high'
 }
 
@@ -32,7 +42,7 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
     productos.reduce((s, p) => s + (p.cantidad || 0), 0), [productos])
 
   const stockBajo = useMemo(() =>
-    productos.filter(p => getStockLevel(p.cantidad, p.stock_minimo) !== 'high' && getStockLevel(p.cantidad, p.stock_minimo) !== 'normal').length,
+    productos.filter(p => p.cantidad <= (p.stock_minimo ?? 5)).length,
   [productos])
 
   // Filtered products
@@ -42,18 +52,14 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
       const q = search.toLowerCase()
       list = list.filter(p =>
         p.nombre.toLowerCase().includes(q) ||
-        (p.categoria || '').toLowerCase().includes(q)
+        (p.categoria || '').toLowerCase().includes(q) ||
+        (p.notas || '').toLowerCase().includes(q)
       )
     }
-    if (filter === 'Bajo') {
-      list = list.filter(p => {
-        const lvl = getStockLevel(p.cantidad, p.stock_minimo)
-        return lvl === 'out' || lvl === 'low'
-      })
-    } else if (filter === 'Normal') {
-      list = list.filter(p => getStockLevel(p.cantidad, p.stock_minimo) === 'normal')
-    } else if (filter === 'Alto') {
-      list = list.filter(p => getStockLevel(p.cantidad, p.stock_minimo) === 'high')
+    if (filter === 'Stock Crítico') {
+      list = list.filter(p => p.cantidad <= (p.stock_minimo ?? 5))
+    } else if (filter !== 'Todos') {
+      list = list.filter(p => p.categoria === filter)
     }
     return list
   }, [productos, search, filter])
@@ -115,7 +121,7 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
           </div>
           <div>
             <span className="sc-num">{productos.length}</span>
-            <span className="sc-label">Productos</span>
+            <span className="sc-label">Insumos y Platos</span>
           </div>
         </div>
 
@@ -128,7 +134,7 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
           </div>
           <div>
             <span className="sc-num">{totalUnidades.toLocaleString()}</span>
-            <span className="sc-label">Unidades</span>
+            <span className="sc-label">Stock en Cocina</span>
           </div>
         </div>
 
@@ -141,7 +147,7 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
           </div>
           <div>
             <span className="sc-num">{stockBajo}</span>
-            <span className="sc-label">Stock Bajo</span>
+            <span className="sc-label">Stock Crítico</span>
           </div>
         </div>
 
@@ -154,14 +160,14 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
           </div>
           <div>
             <span className="sc-num">{movHoy}</span>
-            <span className="sc-label">Mov. Hoy</span>
+            <span className="sc-label">Consumo / Entradas</span>
           </div>
         </div>
       </div>
 
       {/* ── Header with filters ── */}
       <div className="section-header">
-        <h2 className="section-title">Inventario Actual</h2>
+        <h2 className="section-title">Control de Cocina, Parrilla y Barra</h2>
         <div className="filter-row">
           {FILTERS.map(f => (
             <button
@@ -187,11 +193,11 @@ export default function Dashboard({ productos, setProductos, loading, onTabChang
           </svg>
           <p>
             {search || filter !== 'Todos'
-              ? 'No hay productos con ese filtro.'
-              : 'El inventario está vacío.'}
+              ? 'No hay insumos que coincidan con ese filtro en cocina.'
+              : 'El inventario del restaurante está vacío.'}
           </p>
           {!search && filter === 'Todos' && userRole === 'admin' && (
-            <button onClick={() => onTabChange('agregar')}>+ Agregar primer producto</button>
+            <button onClick={() => onTabChange('agregar')}>+ Registrar primer insumo o producto</button>
           )}
         </div>
       ) : (

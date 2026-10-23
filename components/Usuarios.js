@@ -67,7 +67,7 @@ export default function Usuarios() {
   return (
     <div className="tab-content">
       <div className="section-header">
-        <h2 className="section-title">Gestión de Usuarios</h2>
+        <h2 className="section-title">Personal y Permisos de Cocina</h2>
       </div>
 
       <div className="log-table-wrapper" style={{ marginTop: '2rem' }}>
@@ -130,7 +130,7 @@ export default function Usuarios() {
                   <td>
                     <span className={`stock-pill ${user.rol === 'admin' ? 'ok' : 'normal'}`}>
                       <span className="stock-pill-dot" />
-                      {user.rol}
+                      {user.rol === 'admin' ? 'Admin / Jefe Cocina' : 'Cocinero / Barra'}
                     </span>
                   </td>
                   <td style={{ color: 'var(--text-secondary)' }}>
@@ -149,7 +149,7 @@ export default function Usuarios() {
                         fontWeight: '600'
                       }}
                     >
-                      {user.rol === 'admin' ? 'Hacer Usuario' : 'Hacer Admin'}
+                      {user.rol === 'admin' ? 'Cambiar a Cocinero' : 'Hacer Admin'}
                     </button>
                   </td>
                 </tr>

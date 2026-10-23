@@ -8,8 +8,8 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'MMGlass C.A — Sistema de Inventario',
-  description: 'Sistema de control de inventario para MMGlass C.A — Cristal, Aluminio, Acero Inoxidable',
+  title: 'Gourmet & Grill — Sistema de Inventario Gastronómico',
+  description: 'Control de inventario de cocina para restaurante: Parrilla, Comida Árabe, Comida Rápida, Bebidas y Salsas',
 }
 
 export default function RootLayout({ children }) {
