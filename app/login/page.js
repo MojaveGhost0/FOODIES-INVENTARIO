@@ -73,9 +73,9 @@ export default function LoginPage() {
     <div className="login-container">
       <div className="login-box">
         <div className="login-header">
-          <img src="/logo.png" alt="Restaurante & Grill" className="login-logo" />
-          <h2>Inventario Gastronómico</h2>
-          <p>Control de Cocina, Parrilla y Barra</p>
+          <img src="/logo.png" alt="Foodies" className="login-logo" />
+          <h2>Foodies</h2>
+          <p>Sistema de Inventario Gastronómico</p>
         </div>
 
         <form onSubmit={handleLogin} className="login-form">
@@ -87,7 +87,7 @@ export default function LoginPage() {
               id="email"
               type="email"
               autoComplete="email"
-              placeholder="admin@restaurante.com"
+              placeholder="admin@foodies.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

@@ -155,17 +155,17 @@ export default function HomePage() {
         <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img 
             src="/logo.png" 
-            alt="Restaurante Logo" 
-            style={{ width: '80px', height: '80px', objectFit: 'contain', zIndex: 10 }}
+            alt="Foodies Logo" 
+            style={{ width: '84px', height: '84px', objectFit: 'cover', borderRadius: '22px', zIndex: 10, boxShadow: '0 8px 24px rgba(255, 85, 0, 0.35)' }}
           />
           <div style={{ 
-            position: 'absolute', width: '110px', height: '110px', 
-            border: '2px solid transparent', borderTopColor: 'var(--accent)', 
-            borderRadius: '50%', animation: 'spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite' 
+            position: 'absolute', width: '114px', height: '114px', 
+            border: '3px solid transparent', borderTopColor: 'var(--accent)', 
+            borderRadius: '50%', animation: 'spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite' 
           }} />
         </div>
-        <h2 style={{ marginTop: '24px', fontSize: '18px', fontWeight: '700', color: 'var(--text-primary)', letterSpacing: '0.04em' }}>GOURMET & GRILL</h2>
-        <p style={{ marginTop: '4px', fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Iniciando Sistema de Cocina...</p>
+        <h2 style={{ marginTop: '24px', fontSize: '20px', fontWeight: '800', color: 'var(--text-primary)', letterSpacing: '0.06em' }}>FOODIES</h2>
+        <p style={{ marginTop: '4px', fontSize: '13px', color: 'var(--text-secondary)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Iniciando Sistema de Inventario...</p>
       </div>
     )
   }

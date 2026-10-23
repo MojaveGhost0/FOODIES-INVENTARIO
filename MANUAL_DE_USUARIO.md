@@ -1,5 +1,5 @@
 # Manual de Usuario — Sistema de Inventario Gastronómico
-## Gourmet & Grill · Cocina, Parrilla, Árabe & Barra
+## Foodies · Fast Food, Parrilla, Árabe & Barra
 
 ¡Bienvenido al manual operativo del Sistema de Inventario Gastronómico! Esta plataforma está diseñada para el control integral de materias primas, insumos de cocina, carnes de parrilla, especialidades árabes, comida rápida y bebidas.
 
@@ -85,4 +85,4 @@ En cada tarjeta de insumo (visible para Administradores):
 - El sistema cuenta con un seguro que impide degradar al único administrador existente para evitar bloqueos del restaurante.
 
 ---
-*Gourmet & Grill — Sistema de Inventario Gastronómico*
+*Foodies — Sistema de Inventario Gastronómico*

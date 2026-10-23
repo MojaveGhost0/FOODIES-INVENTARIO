@@ -1,6 +1,6 @@
-# 🍽️ Gourmet & Grill — Sistema de Inventario Gastronómico
+# 🍔 Foodies — Sistema de Inventario Gastronómico
 
-Sistema web para el control de inventario de restaurante especializado en **Parrilla, Comida Árabe, Comida Rápida, Bebidas y Cocina**.
+Sistema web para el control de inventario de **Foodies**, especializado en **Fast Food, Parrilla, Comida Árabe, Bebidas y Cocina**.
 
 Desarrollado con **Next.js (App Router)**, **Supabase (PostgreSQL & RLS)** y **Cloudinary**.
 

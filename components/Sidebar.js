@@ -76,10 +76,10 @@ export default function Sidebar({ activeTab, setActiveTab, totalProductos, total
       {/* ── Sidebar Desktop / Mobile Drawer ── */}
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-logo">
-          <img src="/logo.png" alt="Restaurante & Grill" className="logo-img" />
+          <img src="/logo.png" alt="Foodies" className="logo-img" />
           <div className="sidebar-brand-wrap">
-            <span className="sidebar-brand">Gourmet & Grill</span>
-            <span className="sidebar-sub">Cocina & Barra</span>
+            <span className="sidebar-brand">Foodies</span>
+            <span className="sidebar-sub">Inventario & Cocina</span>
           </div>
           {/* Close button inside sidebar on mobile */}
           <button 

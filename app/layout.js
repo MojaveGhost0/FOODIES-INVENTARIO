@@ -8,8 +8,8 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'Gourmet & Grill — Sistema de Inventario Gastronómico',
-  description: 'Control de inventario de cocina para restaurante: Parrilla, Comida Árabe, Comida Rápida, Bebidas y Salsas',
+  title: 'Foodies — Sistema de Inventario Gastronómico',
+  description: 'Control de inventario de cocina para Foodies: Fast Food, Parrilla, Comida Árabe, Bebidas y Salsas',
 }
 
 export default function RootLayout({ children }) {
