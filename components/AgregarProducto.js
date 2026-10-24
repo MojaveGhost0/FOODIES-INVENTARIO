@@ -51,7 +51,8 @@ export default function AgregarProducto({ productos = [], setProductos, setActiv
       setNuevoForm({ nombre: '', cantidad: '', unidad: 'kg', categoria: 'Carnes y Embutidos', stock_minimo: '5', notas: '', imagen_url: '' })
       setTimeout(() => setActiveTab('dashboard'), 800)
     } catch (err) {
-      toast('Error al agregar producto', 'error')
+      console.error('Error al agregar producto:', err)
+      toast(`Error al agregar producto: ${err?.message || 'desconocido'}`, 'error')
     } finally {
       setLoadingNuevo(false)
     }
